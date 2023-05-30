@@ -64,18 +64,51 @@ board_example = ' ' + ' | ' + ' ' + ' | ' + ' ' + '\n' + '---------\n' + ' ' + '
 
 # Main
 if __name__ == '__main__':
-    print()
-    print(intro_message)
+    print('\n' + intro_message)
     print(game_rules)
     print(game_instructions)
-    print(board_example)
-    print()
-    print('Game Start')
-    print()
-    board = Board()
-    board.printBoard()
+    print(board_example + '\n')
+
+    # start game, maybe while loop here to check whether player wants to play again
+    print('Game Start\n')
+    board = Board() # initialize board
+    board.printBoard() # show empty board to player
+    
+    # print starting player
     if board.player == 'X':
         print('Player goes first.')
     else:
         print('Computer goes first.')
-    # while board.winner == None:
+    
+    # Game Loop
+    while board.winner == None:
+        # Player turn
+        if board.player == 'X': 
+            testPlayer = input('inside player turn: \n')
+            print('Available moves:', board.availableMoves()) # show player available moves
+
+        # Computer turn code
+        else:
+            testComp = input('inside comp turn: \n')
+
+        # Print new board state
+        board.printBoard()
+
+        # Check for win
+        if board.CheckWin():
+            # board.winner == board.player
+            test_win = input('inside CheckWin condition: \n')
+            print(board.player + " has won! \n")          
+            # Set ask user to play again or quit
+
+        # Check for tie
+        elif board.checkTie():
+            test_win = input('inside checkTie condition: \n')
+            print('The game has ended in a draw.')
+            # Set ask user to play again or quit
+        
+        # Switch player for next turn
+        if board.player == 'X':
+            board.player = 'O'
+        else:
+            board.player = 'X'
