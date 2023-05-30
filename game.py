@@ -84,12 +84,54 @@ if __name__ == '__main__':
     while board.winner == None:
         # Player turn
         if board.player == 'X': 
-            testPlayer = input('inside player turn: \n')
             print('Available moves:', board.availableMoves()) # show player available moves
+
+            while True:
+                spot = int(input("X's turn, choose a spot (0 - 8): ")) #prompt player for spot on board
+                print(board.player + " makes a move to square " + str(spot))
+
+                # Check if spot is valid and set to proper row and column
+                if spot >= 0 and spot <= 8:
+                    row = spot // 3
+                    column = spot % 3 
+                
+                    # check if spot is available
+                    if [row, column] in board.availableMoves():
+                        board.gameState[row][column] = 'X'
+                        break
+                    else:
+                        print('That spot is not available. Try another spot.')
+                
+                # Player entered spot that is not valid        
+                else:
+                    print('That is not a valid spot. Try again.\n')
 
         # Computer turn code
         else:
-            testComp = input('inside comp turn: \n')
+            #######################################################################
+            # Copy of player code for testing
+            print('Available moves:', board.availableMoves()) # show player available moves
+
+            while True:
+                spot = int(input("O's turn, choose a spot (0 - 8): ")) #prompt player for spot on board
+                print(board.player + " makes a move to square " + str(spot))
+
+                # Check if spot is valid and set to proper row and column
+                if spot >= 0 and spot <= 8:
+                    row = spot // 3
+                    column = spot % 3 
+                
+                    # check if spot is available
+                    if [row, column] in board.availableMoves():
+                        board.gameState[row][column] = 'O'
+                        break
+                    else:
+                        print('That spot is not available. Try another spot.')
+                
+                # Player entered spot that is not valid        
+                else:
+                    print('That is not a valid spot. Try again.\n')
+            #######################################################################
 
         # Print new board state
         board.printBoard()
