@@ -57,8 +57,21 @@ class Board():
             return True
         return False
 
+intro_message = "* * * * * * * * * * * * * Welcome to Tic-Tac-Toe * * * * * * * * * * * * *"
+game_rules = "Rules: The first player to complete 3 of their marks in a row (up, down, across or diagonally) is the winner"
+game_instructions = "Instructions: The player chooses their spot by choosing (column, row) which range from 0 - 2 i.e. choosing  1 2  creates the following board"
+board_example = ' ' + ' | ' + ' ' + ' | ' + ' ' + '\n' + '---------\n' + ' ' + ' | ' + ' ' + ' | ' + 'X' + '\n' + '---------\n' + ' ' + ' | ' + ' ' + ' | ' + ' ' + '\n'
+
 # Main
 if __name__ == '__main__':
+    print()
+    print(intro_message)
+    print(game_rules)
+    print(game_instructions)
+    print(board_example)
+    print()
+    print('Game Start')
+    print()
     board = Board()
     board.printBoard()
     if board.player == 'X':
