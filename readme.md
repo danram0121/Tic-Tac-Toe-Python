@@ -18,6 +18,15 @@ This project is intended to demonstrate knowledge of adverserial search as well 
 * Repeat previous two steps until draw or winner is determined
 * Promtp user to quit or play again
 
+### __Installation instructions__
+* 
+
+### __Dependencies__
+* 
+
+
+</br>
+
 ![gif of game goes here]()
 
 </br>
