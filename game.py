@@ -58,9 +58,9 @@ class Board():
         return False
 
 intro_message = "* * * * * * * * * * * * * Welcome to Tic-Tac-Toe * * * * * * * * * * * * *"
-game_rules = "Rules: The first player to complete 3 of their marks in a row (up, down, across or diagonally) is the winner"
-game_instructions = "Instructions: The player chooses their spot by choosing (column, row) which range from 0 - 2 i.e. choosing  1 2  creates the following board"
-board_example = ' ' + ' | ' + ' ' + ' | ' + ' ' + '\n' + '---------\n' + ' ' + ' | ' + ' ' + ' | ' + 'X' + '\n' + '---------\n' + ' ' + ' | ' + ' ' + ' | ' + ' ' + '\n'
+game_rules = "Rules: The first player to complete 3 of their marks in a row (up, down, across or diagonally) is the winner."
+game_instructions = "Instructions: You must choose a spot on the board by entering a number ranging from 0 - 8 which match to the spots below. \n"
+board_example = '0' + ' | ' + '1' + ' | ' + '2' + '\n' + '---------\n' + '3' + ' | ' + '4' + ' | ' + '5' + '\n' + '---------\n' + '6' + ' | ' + '7' + ' | ' + '8' + '\n'
 
 # Main
 if __name__ == '__main__':
