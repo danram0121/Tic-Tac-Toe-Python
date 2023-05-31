@@ -42,20 +42,49 @@ class Board():
         return True
 
     def CheckWin(self):
+        # Check for tie first
+        if board.checkTie():
+            print('The game has ended in a draw.')
+            board.playAgain()
+        # Check for win now
         # Check rows
         for i in range(3):
             if self.gameState[i][0] == self.gameState[i][1] == self.gameState[i][2] != ' ':
-                return True
+                print("Player " + self.gameState[i][0] + " has won!")
+                board.winner = self.gameState[i][0] # set winner to player
+                board.playAgain()
         # Check columns
         for i in range(3):
             if self.gameState[0][i] == self.gameState[1][i] == self.gameState[2][i] != ' ':
-                return True
+                print("Player " + self.gameState[0][i] + " has won!")
+                board.winner = self.gameState[0][i] # set winner to player  
+                board.playAgain()
         # Check diagonals
         if self.gameState[0][0] == self.gameState[1][1] == self.gameState[2][2] != ' ':
-            return True
+            print("Player " + self.gameState[0][0] + " has won!")
+            board.winner = self.gameState[0][0] # set winner to player
+            board.playAgain()
         if self.gameState[0][2] == self.gameState[1][1] == self.gameState[2][0] != ' ':
-            return True
-        return False
+            print("Player " + self.gameState[0][2] + " has won!")
+            board.winner = self.gameState[0][2] # set winner to player
+            board.playAgain()
+        # If no winner, return False here to continue game
+    
+
+
+    def playAgain(self):
+        # Ask player if they want to play again
+        print('Would you like to play again? (y/n)')
+        if (input().lower() == 'y'):
+            # Create a new instance of the Board class
+            global board  # reference the global variable
+            board = Board()
+            board.printBoard()  # Show the empty board to the player
+            print("Starting a new game.")
+        else:
+            print('Thanks for playing!')
+            exit()
+
 
 intro_message = "* * * * * * * * * * * * * Welcome to Tic-Tac-Toe * * * * * * * * * * * * *"
 game_rules = "Rules: The first player to complete 3 of their marks in a row (up, down, across or diagonally) is the winner."
@@ -127,18 +156,20 @@ if __name__ == '__main__':
         # Print new board state
         board.printBoard()
 
-        # Check for win
-        if board.CheckWin():
-            # board.winner == board.player
-            test_win = input('inside CheckWin condition: \n')
-            print(board.player + " has won! \n")          
-            # Set ask user to play again or quit
+        # # Check for win
+        # if board.CheckWin():
+        #     # board.winner == board.player
+        #     test_win = input('inside CheckWin condition: \n')
+        #     print(board.player + " has won! \n")          
+        #     # Set ask user to play again or quit
 
-        # Check for tie
-        elif board.checkTie():
-            test_win = input('inside checkTie condition: \n')
-            print('The game has ended in a draw.')
-            # Set ask user to play again or quit
+        # # Check for tie
+        # elif board.checkTie():
+        #     test_win = input('inside checkTie condition: \n')
+        #     print('The game has ended in a draw.')
+        #     # Set ask user to play again or quit
+
+        board.CheckWin()
         
         # Switch player for next turn
         if board.player == 'X':
