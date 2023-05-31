@@ -81,30 +81,34 @@ if __name__ == '__main__':
         print('Computer goes first.')
     
     # Game Loop
+    
     while board.winner == None:
         # Player turn
         if board.player == 'X': 
             print('Available moves:', board.availableMoves()) # show player available moves
 
             while True:
-                spot = int(input("X's turn, choose a spot (0 - 8): ")) # prompt player for spot on board
-                print(board.player + " makes a move to square ", spot) # display players move choice
+                try:
+                    spot = int(input("X's turn, choose a spot (0 - 8): ")) # prompt player for spot on board
+                    
+                    # Check if spot is valid and set to proper row and column
+                    if spot >= 0 and spot <= 8:
+                        print(board.player + " makes a move to square ", spot) # display player's move choice
+                        row = spot // 3
+                        column = spot % 3 
 
-                # Check if spot is valid and set to proper row and column
-                if spot >= 0 and spot <= 8:
-                    row = spot // 3
-                    column = spot % 3 
-                
-                    # check if spot is available
-                    if [row, column] in board.availableMoves():
-                        board.gameState[row][column] = 'X'
-                        break
+                        # check if spot is available
+                        if [row, column] in board.availableMoves():
+                            board.gameState[row][column] = 'X'
+                            break
+                        else:
+                            print('That spot is not available. Try another spot.')
                     else:
-                        print('That spot is not available. Try another spot.')
-                
-                # Player entered spot that is not valid        
-                else:
-                    print('That is not a valid spot. Try again.\n')
+                        print('That is not a valid spot. Try again.\n')
+
+                except ValueError:
+                    print('Invalid input. Please enter a valid integer.')
+
 
         # Computer turn code
         else:
