@@ -86,6 +86,51 @@ class Board():
             exit()
 
 
+    def playerMove(self, movesList):
+        print('Available moves:', board.availableMoves()) # show player available moves
+
+        while True:
+            try:
+                spot = int(input("X's turn, choose a spot (0 - 8): ")) # prompt player for spot on board
+                
+                # Check if spot is valid and set to proper row and column
+                if spot >= 0 and spot <= 8:
+                    print(board.player + " makes a move to square ", spot) # display player's move choice
+                    row = spot // 3
+                    column = spot % 3 
+
+                    # check if spot is available
+                    if [row, column] in board.availableMoves():
+                        board.gameState[row][column] = 'X'
+                        break
+                    else:
+                        print('That spot is not available. Try another spot.')
+                else:
+                    print('That is not a valid spot. Try again.\n')
+
+            except ValueError:
+                print('Invalid input. Please enter a valid integer.')
+
+
+    # Random Move Computer Player
+    def randomMove(self, movesList):
+        print("Computer's turn...") # display that it is computer's turn
+        time.sleep(2) #sleep timer to simulate computer thinking
+
+        available_moves = board.availableMoves() # set available moves to choose from
+        computer_move = random.choice(available_moves) # set computer's move to random choice from available moves
+        row, column = computer_move # assign row and column to computer move chosen
+
+        spot = row * 3 + column
+        print(board.player + " makes a move to square ", spot) # display players move choice
+
+        board.gameState[row][column] = 'O' # set spot chosen to computer's value 'O'
+
+
+    # Minmax / Adverserial Computer Player
+    def minMax(self, movesList):
+        pass
+
 intro_message = "* * * * * * * * * * * * * Welcome to Tic-Tac-Toe * * * * * * * * * * * * *"
 game_rules = "Rules: The first player to complete 3 of their marks in a row (up, down, across or diagonally) is the winner."
 game_instructions = "Instructions: You must choose a spot on the board by entering a number ranging from 0 - 8 which match to the spots below. \n"
@@ -114,61 +159,16 @@ if __name__ == '__main__':
     while board.winner == None:
         # Player turn
         if board.player == 'X': 
-            print('Available moves:', board.availableMoves()) # show player available moves
-
-            while True:
-                try:
-                    spot = int(input("X's turn, choose a spot (0 - 8): ")) # prompt player for spot on board
-                    
-                    # Check if spot is valid and set to proper row and column
-                    if spot >= 0 and spot <= 8:
-                        print(board.player + " makes a move to square ", spot) # display player's move choice
-                        row = spot // 3
-                        column = spot % 3 
-
-                        # check if spot is available
-                        if [row, column] in board.availableMoves():
-                            board.gameState[row][column] = 'X'
-                            break
-                        else:
-                            print('That spot is not available. Try another spot.')
-                    else:
-                        print('That is not a valid spot. Try again.\n')
-
-                except ValueError:
-                    print('Invalid input. Please enter a valid integer.')
-
+            board.playerMove(board.availableMoves())
 
         # Computer turn code
         else:
-            print("Computer's turn...") # display that it is computer's turn
-            time.sleep(2) #sleep timer to simulate computer thinking
-
-            available_moves = board.availableMoves() # set available moves to choose from
-            computer_move = random.choice(available_moves) # set computer's move to random choice from available moves
-            row, column = computer_move # assign row and column to computer move chosen
-
-            spot = row * 3 + column
-            print(board.player + " makes a move to square ", spot) # display players move choice
-
-            board.gameState[row][column] = 'O' # set spot chosen to computer's value 'O'
+            board.randomMove(board.availableMoves())
             
         # Print new board state
         board.printBoard()
 
-        # # Check for win
-        # if board.CheckWin():
-        #     # board.winner == board.player
-        #     test_win = input('inside CheckWin condition: \n')
-        #     print(board.player + " has won! \n")          
-        #     # Set ask user to play again or quit
-
-        # # Check for tie
-        # elif board.checkTie():
-        #     test_win = input('inside checkTie condition: \n')
-        #     print('The game has ended in a draw.')
-        #     # Set ask user to play again or quit
-
+        # Check for win or tie
         board.CheckWin()
         
         # Switch player for next turn
