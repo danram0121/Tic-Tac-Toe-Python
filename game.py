@@ -8,7 +8,8 @@ class Board():
     def __init__(self):
         self.gameState = self.setGameState()
         self.player = self.coinToss()
-        self.winner = None        
+        self.winner = None
+        self.mode = None       
     # Methods
     def coinToss(self):
         return 'X' if random.choice([0, 1]) == 0 else 'O'
@@ -79,8 +80,8 @@ class Board():
             # Create a new instance of the Board class
             global board  # reference the global variable
             board = Board()
+            print("\nStarting a new game.\n")
             board.printBoard()  # Show the empty board to the player
-            print("Starting a new game.")
         else:
             print('Thanks for playing!')
             exit()
@@ -130,49 +131,128 @@ class Board():
     # Minmax / Adverserial Computer Player
     def minMax(self, movesList):
         pass
+    
+    def pickMode(self):
+        print("Choose an opponent to play against:\n")
+        print("\t1. Player vs. Player")
+        print("\t2. Player vs. Random Choice")
+        print("\t3. Player vs. MinMax AI\n")
+        
+        # Prompt player for mode choice
+        while True:
+            try:
+                mode = int(input("Choose a mode (1 - 3): "))
+                if mode is 1:
+                    board.mode = 'PvP'
+                    print('You have chosen Player vs. Player mode.\n')
+                    break
+                elif mode is 2:
+                    board.mode = 'PvR'
+                    print('You have chosen Player vs. Random Choice mode.\n')
+                    break
+                elif mode is 3:
+                    board.mode = 'PvM'
+                    print('You have chosen Player vs. MinMax AI mode.\n')
+                    break
+                else:
+                    print('That is not a valid mode. Try again.\n')
+            except ValueError:
+                print('Invalid input. Please enter a valid integer.\n')
+    
+    # Game Mode for Player vs Player
+    def pvp(self):
+        pass
 
-intro_message = "* * * * * * * * * * * * * Welcome to Tic-Tac-Toe * * * * * * * * * * * * *"
-game_rules = "Rules: The first player to complete 3 of their marks in a row (up, down, across or diagonally) is the winner."
-game_instructions = "Instructions: You must choose a spot on the board by entering a number ranging from 0 - 8 which match to the spots below. \n"
-board_example = '0' + ' | ' + '1' + ' | ' + '2' + '\n' + '---------\n' + '3' + ' | ' + '4' + ' | ' + '5' + '\n' + '---------\n' + '6' + ' | ' + '7' + ' | ' + '8' + '\n'
+    # Game Mode for Player vs Random Choice
+    def pvr(self):
+        while board.winner == None:
+            # Player turn
+            if board.player == 'X': 
+                board.playerMove(board.availableMoves())
+
+            # Computer turn code
+            else:
+                board.randomMove(board.availableMoves())
+                
+            # Print new board state
+            board.printBoard()
+
+            # Check for win or tie
+            board.CheckWin()
+            
+            # Switch player for next turn
+            if board.player == 'X':
+                board.player = 'O'
+            else:
+                board.player = 'X'
+
+    # Game Mode for Player vs MinMax AI
+    def pvm(self):
+        pass
+
+    def game(self):
+        # Print intro message, rules, instructions, and board example
+        intro_message = "* * * * * * * * * * * * * Tic-Tac-Toe * * * * * * * * * * * * *"
+        game_rules = "Rules: The first player to complete 3 of their marks in a row (up, down, across or diagonally) is the winner."
+        game_instructions = "Instructions: You must choose a spot on the board by entering a number ranging from 0 - 8 which match to the spots below. \n"
+        board_example = '0' + ' | ' + '1' + ' | ' + '2' + '\n' + '---------\n' + '3' + ' | ' + '4' + ' | ' + '5' + '\n' + '---------\n' + '6' + ' | ' + '7' + ' | ' + '8' + '\n'
+        # Print intro message, rules, instructions, and board example
+        print('\n' + intro_message)
+        print(game_rules)
+        print(game_instructions)
+        # prompt player for mode choice
+        board.pickMode() 
+        # print board example
+        print(board_example + '\n')
+        # print empty board
+        board.printBoard() 
+    
+        # print starting player
+        if board.player == 'X':
+            print('Player goes first.')
+        else:
+            print('Computer goes first.')
+        
+        # Check Game Mode Here (PvP, PvR, PvM)
+        if board.mode == 'PvP':
+            board.pvp()
+        elif board.mode == 'PvR':
+            board.pvr()
+        elif board.mode == 'PvM':
+            board.pvm()
+        else:
+            print('Something went wrong. Game mode needs to be set. Exiting game.')
+            exit()
+        # Game Loop
+        
+        # while board.winner == None:
+        #     # Player turn
+        #     if board.player == 'X': 
+        #         board.playerMove(board.availableMoves())
+
+        #     # Computer turn code
+        #     else:
+        #         board.randomMove(board.availableMoves())
+                
+        #     # Print new board state
+        #     board.printBoard()
+
+        #     # Check for win or tie
+        #     board.CheckWin()
+            
+        #     # Switch player for next turn
+        #     if board.player == 'X':
+        #         board.player = 'O'
+        #     else:
+        #         board.player = 'X'
+
 
 # Main
 if __name__ == '__main__':
-    print('\n' + intro_message)
-    print(game_rules)
-    print(game_instructions)
-    print(board_example + '\n')
+    
 
     # start game, maybe while loop here to check whether player wants to play again
     print('Game Start\n')
     board = Board() # initialize board
-    board.printBoard() # show empty board to player
+    board.game() # start game
     
-    # print starting player
-    if board.player == 'X':
-        print('Player goes first.')
-    else:
-        print('Computer goes first.')
-    
-    # Game Loop
-    
-    while board.winner == None:
-        # Player turn
-        if board.player == 'X': 
-            board.playerMove(board.availableMoves())
-
-        # Computer turn code
-        else:
-            board.randomMove(board.availableMoves())
-            
-        # Print new board state
-        board.printBoard()
-
-        # Check for win or tie
-        board.CheckWin()
-        
-        # Switch player for next turn
-        if board.player == 'X':
-            board.player = 'O'
-        else:
-            board.player = 'X'
