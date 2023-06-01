@@ -34,6 +34,8 @@ class Board():
                      '---------\n' +
                      self.gameState[2][0] + ' | ' + self.gameState[2][1] + ' | ' + self.gameState[2][2] + '\n')
     
+    
+    
     def checkTie(self):
     # check if any spaces are left empty OR if theres a winner, if neither, return True
         for i in range(3):
@@ -46,33 +48,34 @@ class Board():
 
     #  I think calling playAgain() here is causing the game to run multiple modes at once
     def CheckWin(self):
-        # Check for tie first
-        if board.checkTie():
-            print('The game has ended in a draw.')
-            board.playAgain()
+       
         # Check for win now
         # Check rows
         for i in range(3):
             if self.gameState[i][0] == self.gameState[i][1] == self.gameState[i][2] != ' ':
                 print("Player " + self.gameState[i][0] + " has won!")
                 board.winner = self.gameState[i][0] # set winner to player
-                board.playAgain()
+                # board.playAgain()
         # Check columns
         for i in range(3):
             if self.gameState[0][i] == self.gameState[1][i] == self.gameState[2][i] != ' ':
                 print("Player " + self.gameState[0][i] + " has won!")
                 board.winner = self.gameState[0][i] # set winner to player  
-                board.playAgain()
+                # board.playAgain()
         # Check diagonals
         if self.gameState[0][0] == self.gameState[1][1] == self.gameState[2][2] != ' ':
             print("Player " + self.gameState[0][0] + " has won!")
             board.winner = self.gameState[0][0] # set winner to player
-            board.playAgain()
+            # board.playAgain()
         if self.gameState[0][2] == self.gameState[1][1] == self.gameState[2][0] != ' ':
             print("Player " + self.gameState[0][2] + " has won!")
             board.winner = self.gameState[0][2] # set winner to player
-            board.playAgain()
-        # If no winner, return False here to continue game
+            # board.playAgain()
+        # Check for tie if no winner 
+        if board.checkTie():
+            print('The game has ended in a draw.')
+            board.winner = 'Tie'
+            # board.playAgain()
     
 
 
@@ -85,7 +88,7 @@ class Board():
                 global board  # reference the global variable
                 board = Board()
                 print("\nStarting a new game.\n")
-                board.game()  
+                board.pickMode()  
                 break
             elif user_input == 'n':
                 print('\nThanks for playing!')
@@ -237,8 +240,6 @@ class Board():
         print(game_instructions)
     
     def game(self):    
-        # prompt player for mode choice
-        board.pickMode() 
         # print board example
         board_example = '0' + ' | ' + '1' + ' | ' + '2' + '\n' + '---------\n' + '3' + ' | ' + '4' + ' | ' + '5' + '\n' + '---------\n' + '6' + ' | ' + '7' + ' | ' + '8' + '\n'
         print(board_example + '\n')
@@ -258,12 +259,17 @@ class Board():
        
 
 
+
+
 # Main
 if __name__ == '__main__':
     
+    print('Game Start\n') # start game
+    board = Board()  # initialize board
+    board.pickMode()  # prompt player for mode choice
+    while True:
+        
+        board.game()  # start game
+        board.playAgain()  # ask player if they want to play again
 
-    # start game, maybe while loop here to check whether player wants to play again
-    print('Game Start\n')
-    board = Board() # initialize board
-    board.game() # start game
     
