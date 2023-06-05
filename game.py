@@ -48,34 +48,29 @@ class Board():
 
     #  I think calling playAgain() here is causing the game to run multiple modes at once
     def CheckWin(self):
-       
-        # Check for win now
         # Check rows
+        # changed board.winner => self.winner
         for i in range(3):
             if self.gameState[i][0] == self.gameState[i][1] == self.gameState[i][2] != ' ':
-                print("Player " + self.gameState[i][0] + " has won!")
-                board.winner = self.gameState[i][0] # set winner to player
-                # board.playAgain()
+                self.winner = self.gameState[i][0]
+                return True
+
         # Check columns
         for i in range(3):
             if self.gameState[0][i] == self.gameState[1][i] == self.gameState[2][i] != ' ':
-                print("Player " + self.gameState[0][i] + " has won!")
-                board.winner = self.gameState[0][i] # set winner to player  
-                # board.playAgain()
+                self.winner = self.gameState[0][i]
+                return True
+
         # Check diagonals
         if self.gameState[0][0] == self.gameState[1][1] == self.gameState[2][2] != ' ':
-            print("Player " + self.gameState[0][0] + " has won!")
-            board.winner = self.gameState[0][0] # set winner to player
-            # board.playAgain()
+            self.winner = self.gameState[0][0]
+            return True
         if self.gameState[0][2] == self.gameState[1][1] == self.gameState[2][0] != ' ':
-            print("Player " + self.gameState[0][2] + " has won!")
-            board.winner = self.gameState[0][2] # set winner to player
-            # board.playAgain()
-        # Check for tie if no winner 
-        if board.checkTie():
-            print('The game has ended in a draw.')
-            board.winner = 'Tie'
-            # board.playAgain()
+            self.winner = self.gameState[0][2]
+            return True
+
+        return False
+            
     
 
 
@@ -141,8 +136,71 @@ class Board():
 
 
     # Minmax / Adverserial Computer Player
-    def minMax(self, movesList):
-        pass
+    def Ai(self, movesList):
+        bestScore = -math.inf # set best score to really low so 1st score is always better
+        bestMove = None
+
+        for move in movesList: # for every available move run minMax to find best move
+            row, col = move
+
+            self.gameState[row][col] = 'O' # set current move to AI letter
+
+            score = self.minMax(0, False)  # score equals result of simulating this move as AI's move, since its the first move depth is 0 and we are not maximizing we will minimize players turn
+
+            board.winner = None # reset the game winner value so the PVM can check for winner
+            self.gameState[row][col] = ' ' # undo line 151 to undo tested move
+
+            if score > bestScore: # if the simulated score is better than the best score change bestScore to score and save the bestMove as the simulated move
+                bestScore = score
+                bestMove = move
+        
+        print("best score: " ,bestScore)
+        
+        self.gameState[bestMove[0]][bestMove[1]] = self.player
+    
+    def minMax(self, depth, isMaximizing):
+        scores = {
+            "X": 1,
+            "O": -1
+        }
+
+        if self.CheckWin(): # if the previous move resulted in a win return score based on if AI won positive, or Player won negative
+            print("self.winner: ", self.winner)
+            return scores[self.winner]
+        if self.checkTie(): # if the game ended in tie return 0
+            print("tie self.winner: ", self.winner)
+            return 0
+        
+
+        if isMaximizing: # if its the 
+            bestScore = -math.inf
+
+            for move in self.availableMoves():
+                row, col = move
+                self.gameState[row][col] = 'O'
+                score = self.minMax(depth + 1, False)
+
+                self.gameState[row][col] = ' '
+
+                bestScore = max(score, bestScore)
+
+            return bestScore
+
+        else:
+            bestScore = math.inf
+
+            for move in self.availableMoves():
+                row, col = move
+                self.gameState[row][col] = 'X'
+                score = self.minMax(depth + 1, True)
+
+                self.gameState[row][col] = ' '
+
+                bestScore = min(score, bestScore)
+
+            return bestScore
+
+
     
     def pickMode(self):
         print("Choose an opponent to play against:\n")
@@ -225,7 +283,28 @@ class Board():
 
     # Game Mode for Player vs MinMax AI
     def pvm(self):
-        print("AI mode not yet implemented")
+        while board.winner == None:
+            # Player turn
+            if board.player == 'X': 
+                board.playerMove(board.availableMoves())
+
+            # Computer turn code
+            else:
+                board.Ai(board.availableMoves())
+                
+            # Print new board state
+            board.printBoard()
+
+            # Check for win or tie
+            board.CheckWin()
+
+            print("Winner: ", board.winner)
+            
+            # Switch player for next turn
+            if board.player == 'X':
+                board.player = 'O'
+            else:
+                board.player = 'X'
         
     
     def info(self):
