@@ -55,27 +55,33 @@ class Board():
             if self.gameState[i][0] == self.gameState[i][1] == self.gameState[i][2] != ' ':
                 print("Player " + self.gameState[i][0] + " has won!")
                 board.winner = self.gameState[i][0] # set winner to player
+                return True
                 # board.playAgain()
         # Check columns
         for i in range(3):
             if self.gameState[0][i] == self.gameState[1][i] == self.gameState[2][i] != ' ':
                 print("Player " + self.gameState[0][i] + " has won!")
-                board.winner = self.gameState[0][i] # set winner to player  
+                board.winner = self.gameState[0][i] # set winner to player 
+                return True
                 # board.playAgain()
         # Check diagonals
         if self.gameState[0][0] == self.gameState[1][1] == self.gameState[2][2] != ' ':
             print("Player " + self.gameState[0][0] + " has won!")
             board.winner = self.gameState[0][0] # set winner to player
+            return True
             # board.playAgain()
         if self.gameState[0][2] == self.gameState[1][1] == self.gameState[2][0] != ' ':
             print("Player " + self.gameState[0][2] + " has won!")
             board.winner = self.gameState[0][2] # set winner to player
+            return True
             # board.playAgain()
         # Check for tie if no winner 
         if board.checkTie():
             print('The game has ended in a draw.')
             board.winner = 'Tie'
+            return True
             # board.playAgain()
+        return False
     
 
 
@@ -140,9 +146,7 @@ class Board():
         board.gameState[row][column] = 'O' # set spot chosen to computer's value 'O'
 
 
-    # Minmax / Adverserial Computer Player
-    def minMax(self, movesList):
-        pass
+
     
     def pickMode(self):
         print("Choose an opponent to play against:\n")
@@ -223,10 +227,142 @@ class Board():
             else:
                 board.player = 'X'
 
+    
+    # MinMax AI Game Mode for Player vs MinMax AI 
+    # evaluate the board and return the score
+    def evaluate(self):
+        # Check rows
+        for row in range(3):
+            if self.gameState[row][0] == self.gameState[row][1] == self.gameState[row][2]:
+                if self.gameState[row][0] == 'O':
+                    return 10
+                elif self.gameState[row][0] == 'X':
+                    return -10
+
+        # Check columns
+        for col in range(3):
+            if self.gameState[0][col] == self.gameState[1][col] == self.gameState[2][col]:
+                if self.gameState[0][col] == 'O':
+                    return 10
+                elif self.gameState[0][col] == 'X':
+                    return -10
+
+        # Check diagonals
+        if self.gameState[0][0] == self.gameState[1][1] == self.gameState[2][2]:
+            if self.gameState[0][0] == 'O':
+                return 10
+            elif self.gameState[0][0] == 'X':
+                return -10
+
+        if self.gameState[0][2] == self.gameState[1][1] == self.gameState[2][0]:
+            if self.gameState[0][2] == 'O':
+                return 10
+            elif self.gameState[0][2] == 'X':
+                return -10
+
+        return 0  # No winner
+    
+    # Implementing Minimax Algorithm
+    def minmax(self, depth, isMax):
+        score = self.evaluate()
+
+        # If Maximizer has won the game return his/her score
+        if score == 10:
+            return score
+
+        # If Minimizer has won the game return his/her score
+        if score == -10:
+            return score
+
+        # If there are no more moves and no winner then it is a tie
+        if len(self.availableMoves()) == 0:
+            return 0
+
+        # If this maximizer's move
+        if isMax:
+            best = -1000
+
+            for move in self.availableMoves():
+                row, col = move
+                backup = self.gameState[row][col]  # backup current state
+                self.gameState[row][col] = 'O'
+
+                best = max(best, self.minmax(depth + 1, not isMax))
+
+                self.gameState[row][col] = backup  # undo the move
+            return best
+
+        # If this minimizer's move
+        else:
+            best = 1000
+
+            for move in self.availableMoves():
+                row, col = move
+                backup = self.gameState[row][col]  # backup current state
+                self.gameState[row][col] = 'X'
+
+                best = min(best, self.minmax(depth + 1, not isMax))
+
+                self.gameState[row][col] = backup  # undo the move
+            return best
+
+    # Returns the best possible move for the player
+    def findBestMove(self):
+        bestVal = -1000
+        bestMove = [-1, -1]
+
+        for move in self.availableMoves():
+            row, col = move
+            backup = self.gameState[row][col]  # backup current state
+
+            self.gameState[row][col] = 'O'
+
+            moveVal = self.minmax(0, False)
+
+            self.gameState[row][col] = backup  # undo the move
+
+            if moveVal > bestVal:
+                bestMove = [row, col]
+                bestVal = moveVal
+        return bestMove
+
     # Game Mode for Player vs MinMax AI
     def pvm(self):
-        print("AI mode not yet implemented")
-        
+        while self.winner == None:
+            # Player turn
+            if self.player == 'X':
+                self.playerMove(self.availableMoves())
+
+            # Computer turn code
+            else:
+                if len(self.availableMoves()) == 9:  # no moves made yet
+                    print(self.player + " makes a move to square 4")  # display computer's move choice
+                    self.gameState[1][1] = 'O'  # set middle spot chosen to computer's value 'O'
+                else:
+                    bestMove = self.findBestMove()
+                    row, col = bestMove
+                    spot = row * 3 + col
+                    print(self.player + " makes a move to square ", spot)  # display computer's move choice
+                    self.gameState[row][col] = 'O'  # set spot chosen to computer's value 'O'
+
+            # Print new board state
+            self.printBoard()
+
+            # Check for win or tie
+            self.CheckWin()
+                
+            # Switch player for next turn
+            if self.player == 'X':
+                self.player = 'O'
+            else:
+                self.player = 'X'
+
+
+
+
+
+   
+
     
     def info(self):
         # Print intro message, rules, instructions
