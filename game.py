@@ -106,7 +106,7 @@ class Board():
 
 
     def playerMove(self, movesList):
-        print('Available moves:', board.availableMoves()) # show player available moves
+        # print('Available moves:', board.availableMoves()) # show player available moves
 
         while True:
             try:
@@ -400,9 +400,11 @@ class Board():
 # Main
 if __name__ == '__main__':
     
-    print('Game Start\n') # start game
+    # print('Game Start\n') # start game
     board = Board()  # initialize board
+    board.info()  # print intro message, rules, instructions
     board.pickMode()  # prompt player for mode choice
+
     while True:
         
         board.game()  # start game
