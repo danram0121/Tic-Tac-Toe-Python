@@ -19,17 +19,36 @@ This project is intended to demonstrate knowledge of adverserial search as well 
 * Promtp user to quit or play again
 
 ### __Installation instructions__
-* 
+
+The game does not require more than having python installed on the machine that will run it
+
+With the command prompt in the directory that the file is contained in you can run our file using:
+
+```xml
+python a1_jkantlehner2018.py
+```
+
+This command will start the game and would look like the image below.
+
+![Tic Tac Toe starting screen](/Tic-Tac-Toe-Python/readme_res/start.png)
 
 ### __Dependencies__
-* 
-
-
-</br>
-
-![gif of game goes here]()
+This project required no special dependencies to run.
 
 </br>
 
-![pic of game goes here]()
+## __Examples__
+---
+
+### __Screenshots__
+
+</br>
+
+![Tic Tac Toe starting screen](/Tic-Tac-Toe-Python/readme_res/start.png)
+
+### __Gif__
+
+</br>
+
+![Gif of game against AI](/Tic-Tac-Toe-Python/readme_res/game%20gif.gif)
 
