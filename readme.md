@@ -38,7 +38,6 @@ This project required no special dependencies to run.
 </br>
 
 ## __Examples__
----
 
 ### __Screenshots__
 
