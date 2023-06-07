@@ -30,7 +30,7 @@ python a1_jkantlehner2018.py
 
 This command will start the game and would look like the image below.
 
-![Tic Tac Toe starting screen](/Tic-Tac-Toe-Python/readme_res/start.png)
+![Tic Tac Toe starting screen](/readme_res/start.png)
 
 ### __Dependencies__
 This project required no special dependencies to run.
@@ -44,11 +44,11 @@ This project required no special dependencies to run.
 
 </br>
 
-![Tic Tac Toe starting screen](/Tic-Tac-Toe-Python/readme_res/start.png)
+![Tic Tac Toe starting screen](readme_res/start.png)
 
 ### __Gif__
 
 </br>
 
-![Gif of game against AI](/Tic-Tac-Toe-Python/readme_res/game%20gif.gif)
+![Gif of game against AI](readme_res/game%20gif.gif)
 
